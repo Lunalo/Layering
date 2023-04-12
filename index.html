@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="data/gadm41_KEN_1_1.js"></script>
+        <script src="data/gadm41_KEN_0_2.js"></script>
+        <script src="data/gadm41_KEN_2_3.js"></script>
+        <script src="data/PREGandSEKGIS_4.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:4
+        }).fitBounds([[-4.648343981899343,29.572535031915137],[4.817195215343244,47.0249867621324]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        map.createPane('pane_OpenStreetMap_0');
+        map.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
+        var layer_OpenStreetMap_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMap_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 4,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMap_0;
+        map.addLayer(layer_OpenStreetMap_0);
+        function pop_gadm41_KEN_1_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GID_1'] !== null ? autolinker.link(feature.properties['GID_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GID_0'] !== null ? autolinker.link(feature.properties['GID_0'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COUNTRY'] !== null ? autolinker.link(feature.properties['COUNTRY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME_1'] !== null ? autolinker.link(feature.properties['NAME_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['VARNAME_1'] !== null ? autolinker.link(feature.properties['VARNAME_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NL_NAME_1'] !== null ? autolinker.link(feature.properties['NL_NAME_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TYPE_1'] !== null ? autolinker.link(feature.properties['TYPE_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ENGTYPE_1'] !== null ? autolinker.link(feature.properties['ENGTYPE_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CC_1'] !== null ? autolinker.link(feature.properties['CC_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['HASC_1'] !== null ? autolinker.link(feature.properties['HASC_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ISO_1'] !== null ? autolinker.link(feature.properties['ISO_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_gadm41_KEN_1_1_0() {
+            return {
+                pane: 'pane_gadm41_KEN_1_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 3.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(231,113,72,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_gadm41_KEN_1_1');
+        map.getPane('pane_gadm41_KEN_1_1').style.zIndex = 401;
+        map.getPane('pane_gadm41_KEN_1_1').style['mix-blend-mode'] = 'normal';
+        var layer_gadm41_KEN_1_1 = new L.geoJson(json_gadm41_KEN_1_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_gadm41_KEN_1_1',
+            layerName: 'layer_gadm41_KEN_1_1',
+            pane: 'pane_gadm41_KEN_1_1',
+            onEachFeature: pop_gadm41_KEN_1_1,
+            style: style_gadm41_KEN_1_1_0,
+        });
+        bounds_group.addLayer(layer_gadm41_KEN_1_1);
+        map.addLayer(layer_gadm41_KEN_1_1);
+        function pop_gadm41_KEN_0_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GID_0'] !== null ? autolinker.link(feature.properties['GID_0'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COUNTRY'] !== null ? autolinker.link(feature.properties['COUNTRY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_gadm41_KEN_0_2_0() {
+            return {
+                pane: 'pane_gadm41_KEN_0_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,139,143,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_gadm41_KEN_0_2');
+        map.getPane('pane_gadm41_KEN_0_2').style.zIndex = 402;
+        map.getPane('pane_gadm41_KEN_0_2').style['mix-blend-mode'] = 'normal';
+        var layer_gadm41_KEN_0_2 = new L.geoJson(json_gadm41_KEN_0_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_gadm41_KEN_0_2',
+            layerName: 'layer_gadm41_KEN_0_2',
+            pane: 'pane_gadm41_KEN_0_2',
+            onEachFeature: pop_gadm41_KEN_0_2,
+            style: style_gadm41_KEN_0_2_0,
+        });
+        bounds_group.addLayer(layer_gadm41_KEN_0_2);
+        map.addLayer(layer_gadm41_KEN_0_2);
+        function pop_gadm41_KEN_2_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GID_2'] !== null ? autolinker.link(feature.properties['GID_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GID_0'] !== null ? autolinker.link(feature.properties['GID_0'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COUNTRY'] !== null ? autolinker.link(feature.properties['COUNTRY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GID_1'] !== null ? autolinker.link(feature.properties['GID_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME_1'] !== null ? autolinker.link(feature.properties['NAME_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NL_NAME_1'] !== null ? autolinker.link(feature.properties['NL_NAME_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME_2'] !== null ? autolinker.link(feature.properties['NAME_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['VARNAME_2'] !== null ? autolinker.link(feature.properties['VARNAME_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NL_NAME_2'] !== null ? autolinker.link(feature.properties['NL_NAME_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TYPE_2'] !== null ? autolinker.link(feature.properties['TYPE_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ENGTYPE_2'] !== null ? autolinker.link(feature.properties['ENGTYPE_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CC_2'] !== null ? autolinker.link(feature.properties['CC_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['HASC_2'] !== null ? autolinker.link(feature.properties['HASC_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_gadm41_KEN_2_3_0() {
+            return {
+                pane: 'pane_gadm41_KEN_2_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(196,60,57,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_gadm41_KEN_2_3');
+        map.getPane('pane_gadm41_KEN_2_3').style.zIndex = 403;
+        map.getPane('pane_gadm41_KEN_2_3').style['mix-blend-mode'] = 'normal';
+        var layer_gadm41_KEN_2_3 = new L.geoJson(json_gadm41_KEN_2_3, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_gadm41_KEN_2_3',
+            layerName: 'layer_gadm41_KEN_2_3',
+            pane: 'pane_gadm41_KEN_2_3',
+            onEachFeature: pop_gadm41_KEN_2_3,
+            style: style_gadm41_KEN_2_3_0,
+        });
+        bounds_group.addLayer(layer_gadm41_KEN_2_3);
+        map.addLayer(layer_gadm41_KEN_2_3);
+        function pop_PREGandSEKGIS_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Country</th>\
+                        <td>' + (feature.properties['Country'] !== null ? autolinker.link(feature.properties['Country'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Activity Location Type</th>\
+                        <td>' + (feature.properties['Activity_Location_Data_Type'] !== null ? autolinker.link(feature.properties['Activity_Location_Data_Type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Activity Name</th>\
+                        <td>' + (feature.properties['Activity_Name'] !== null ? autolinker.link(feature.properties['Activity_Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Office</th>\
+                        <td>' + (feature.properties['Office'] !== null ? autolinker.link(feature.properties['Office'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Activity Status</th>\
+                        <td>' + (feature.properties['Activity_Status'] !== null ? autolinker.link(feature.properties['Activity_Status'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">IP</th>\
+                        <td>' + (feature.properties['Partner_Organization'] !== null ? autolinker.link(feature.properties['Partner_Organization'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Longitude</th>\
+                        <td>' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Latitude</th>\
+                        <td>' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">County</th>\
+                        <td>' + (feature.properties['Admin_Name_1'] !== null ? autolinker.link(feature.properties['Admin_Name_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Subcounty</th>\
+                        <td>' + (feature.properties['Admin_Name_2'] !== null ? autolinker.link(feature.properties['Admin_Name_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Intervention Status</th>\
+                        <td>' + (feature.properties['Intervention_Status'] !== null ? autolinker.link(feature.properties['Intervention_Status'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Intervention Description</th>\
+                        <td>' + (feature.properties['Intervention_Description'] !== null ? autolinker.link(feature.properties['Intervention_Description'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PREGandSEKGIS_4_0(feature) {
+            switch(String(feature.properties['Partner_Organization'])) {
+                case 'ACDI/VOCA':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(208,124,153,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'ACTED ':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(119,203,187,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Action Against Hunger':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(128,214,113,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'AGA KHAN FOUNDATION U.S.A.':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(67,230,94,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CHEMONICS INTERNATIONAL, INC.':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(177,225,20,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Concern Worldwide':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(154,21,211,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'CRS - Nawiri':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(225,108,62,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'DELOITTE & TOUCHE KENYA':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(218,78,82,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'KRCS':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(37,25,206,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'KRCS/UNICEF':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(62,99,210,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Mercy Corps - Nawiri':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,121,180,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'MICHIGAN STATE UNIVERSITY':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(129,83,203,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PALLADIUM INTERNATIONAL LLC':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(107,213,158,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'RACIDA':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(213,145,41,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'RTI INTERNATIONAL':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(87,205,220,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Save the Children':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(101,201,18,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'WFP':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(233,219,64,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'World Vision Kenya':
+                    return {
+                pane: 'pane_PREGandSEKGIS_4',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(86,153,204,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_PREGandSEKGIS_4');
+        map.getPane('pane_PREGandSEKGIS_4').style.zIndex = 404;
+        map.getPane('pane_PREGandSEKGIS_4').style['mix-blend-mode'] = 'normal';
+        var layer_PREGandSEKGIS_4 = new L.geoJson(json_PREGandSEKGIS_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PREGandSEKGIS_4',
+            layerName: 'layer_PREGandSEKGIS_4',
+            pane: 'pane_PREGandSEKGIS_4',
+            onEachFeature: pop_PREGandSEKGIS_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_PREGandSEKGIS_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_PREGandSEKGIS_4);
+        map.addLayer(layer_PREGandSEKGIS_4);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'PREG and SEK GIS<br /><table><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_ACDIVOCA0.png" /></td><td>ACDI/VOCA</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_ACTED1.png" /></td><td>ACTED </td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_ActionAgainstHunger2.png" /></td><td>Action Against Hunger</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_AGAKHANFOUNDATIONUSA3.png" /></td><td>AGA KHAN FOUNDATION U.S.A.</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_CHEMONICSINTERNATIONALINC4.png" /></td><td>CHEMONICS INTERNATIONAL, INC.</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_ConcernWorldwide5.png" /></td><td>Concern Worldwide</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_CRSNawiri6.png" /></td><td>CRS - Nawiri</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_DELOITTETOUCHEKENYA7.png" /></td><td>DELOITTE & TOUCHE KENYA</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_KRCS8.png" /></td><td>KRCS</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_KRCSUNICEF9.png" /></td><td>KRCS/UNICEF</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_MercyCorpsNawiri10.png" /></td><td>Mercy Corps - Nawiri</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_MICHIGANSTATEUNIVERSITY11.png" /></td><td>MICHIGAN STATE UNIVERSITY</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_PALLADIUMINTERNATIONALLLC12.png" /></td><td>PALLADIUM INTERNATIONAL LLC</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_RACIDA13.png" /></td><td>RACIDA</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_RTIINTERNATIONAL14.png" /></td><td>RTI INTERNATIONAL</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_SavetheChildren15.png" /></td><td>Save the Children</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_WFP16.png" /></td><td>WFP</td></tr><tr><td style="text-align: center;"><img src="legend/PREGandSEKGIS_4_WorldVisionKenya17.png" /></td><td>World Vision Kenya</td></tr></table>': layer_PREGandSEKGIS_4,'<img src="legend/gadm41_KEN_2_3.png" /> gadm41_KEN_2': layer_gadm41_KEN_2_3,'<img src="legend/gadm41_KEN_0_2.png" /> gadm41_KEN_0': layer_gadm41_KEN_0_2,'<img src="legend/gadm41_KEN_1_1.png" /> gadm41_KEN_1': layer_gadm41_KEN_1_1,"OpenStreetMap": layer_OpenStreetMap_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_gadm41_KEN_2_3.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['NAME_2'] !== null?String('<div style="color: #000000; font-size: 10pt; font-family: \'Gill Sans MT\', sans-serif;">' + layer.feature.properties['NAME_2']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_gadm41_KEN_2_3'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_gadm41_KEN_2_3]);
+        map.on("zoomend", function(){
+            resetLabels([layer_gadm41_KEN_2_3]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_gadm41_KEN_2_3]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_gadm41_KEN_2_3]);
+        });
+        </script>
+    </body>
+</html>
